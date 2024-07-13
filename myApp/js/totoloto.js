@@ -37,11 +37,15 @@ let historicalData = [
     [8, 17, 18, 41, 49], // (6) Sorteio: 048/2024 totoloto
     [20, 21, 28, 39, 42], // (1) Sorteio: 049/2024 totoloto
     [15, 20, 21, 38,42], // (6) Sorteio: 050/2024 totoloto
-    [17, 19, 32 , 33, 41] // (5) Sorteio: 051/2024 totoloto
+    [17, 19, 32 , 33, 41], // (5) Sorteio: 051/2024 totoloto
+    [24, 15,33, 48, 34], //(8) Sorteio: 052/2024 totoloto
+    [40, 14, 37, 35, 1], // (1) Sorteio: 053/2024 totoloto
+    [47, 48, 6, 24, 34], // (9) Sorteio: 054/2024 totoloto
+    [11,15,22,33,41] // (4) Sorteio: 055/2024 totoloto
   ];
 
   let luckyNumber = [
-    [6],[10],[3],[10],[5],[2],[10],[5],[8],[1],[6],[13],[1],[10],[10],[1],[13],[6],[3],[12],[4], [6],[5],[6],[6],[6],[6],[1],[6],[5] 
+    [6],[10],[3],[10],[5],[2],[10],[5],[8],[1],[6],[13],[1],[10],[10],[1],[13],[6],[3],[12],[4], [6],[5],[6],[6],[6],[6],[1],[6],[5],[8],[1],[9],[4] 
   ]
     // Count the occurrences of each number
     const countOccurrences = (data) => {
@@ -54,7 +58,9 @@ let historicalData = [
         return counts;
     };
   
-  
+
+
+
       const TotalCount = historicalData.length * historicalData[0].length;
       const TotalCountLucky = luckyNumber.length * luckyNumber[0].length;
 
@@ -180,7 +186,7 @@ const generateNumbers = (targetId, count, includeStars = false) => {
 for (let i = 0; i < 5; i++) {
     let randomNumber;
     do {
-        randomNumber = weightedRandom(numberProbabilities);
+        randomNumber = weightedRandom(numberProbabilities) 
         }while (numbers.includes(randomNumber));
         numbers.push(randomNumber);
     }
@@ -241,11 +247,49 @@ console.log("weighted random", weightedRandom(numberProbabilities));
 console.log("weighted random of lucky probability", weightedRandom(luckyProbabilities));
 
 const generateEuroButton = document.getElementById('generateEuroButton')
-const generateStarsButton = document.getElementById('generateStarsButton')
+
+
+const generateInverseButton = document.getElementById('generateInverseButton')
 
 generateEuroButton.addEventListener("click", () => generateNumbers('numbers',5, true))
 
-generateStarsButton.addEventListener("click", () => generateLuckyNumber('stars'))
+generateInverseButton.addEventListener("click", () => generateLuckyNumber('stars'))
 
 // console.log("number of probabilities" ,generateLuckyNumber('stars'))
+
+
+//INVERSE FUNCTIONS 
+    //Calculate the inverseFrequencies of each number
+const calculateInverseFrequencies = (counts) => {
+let inverseFrequencies = {};
+  for (let number in counts) {
+    console.log("inverse Frequencies",number, counts[number] / totalDraws, 1 / counts[number] );
+      inverseFrequencies[number] = 1 / counts[number];
+  }
+  console.log(counts)
+  return inverseFrequencies;
+  };
+      
+const inverseFrequencies = calculateInverseFrequencies(numberCounts);
+const inverseProbabilities = calculateProbabilities(inverseFrequencies, TotalCount);
+console.log("Inverse Probabilities:", inverseProbabilities);
+
+const weightedRandomInverse = (cumulativeProbabilities) => {
+  const r = Math.random();
+  console.log("Random Number r:", r);
+  for (let number in cumulativeProbabilities) {
+      if (r <= cumulativeProbabilities[number]) {
+          return parseInt(number);
+      }
+      const selectedNumber = weightedRandomInverse(cumulativeProbabilities);
+      const selectedLuckyNumber = weightedRandomInverse(cumulativeProbabilitiesLucky);
+      console.log("Selected Number:", selectedNumber);
+      console.log("Selected Lucky Number:", selectedLuckyNumber);
+  
+    }
+  console.error("No number was selected. Check the probabilities.");
+  return null;
+  
+};
+
 
