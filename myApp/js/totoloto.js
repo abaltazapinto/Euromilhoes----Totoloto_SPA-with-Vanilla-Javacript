@@ -248,12 +248,8 @@ console.log("weighted random of lucky probability", weightedRandom(luckyProbabil
 
 const generateEuroButton = document.getElementById('generateEuroButton')
 
-
-const generateInverseButton = document.getElementById('generateInverseButton')
-
 generateEuroButton.addEventListener("click", () => generateNumbers('numbers',5, true))
 
-generateInverseButton.addEventListener("click", () => generateLuckyNumber('stars'))
 
 // console.log("number of probabilities" ,generateLuckyNumber('stars'))
 
@@ -274,22 +270,120 @@ const inverseFrequencies = calculateInverseFrequencies(numberCounts);
 const inverseProbabilities = calculateProbabilities(inverseFrequencies, TotalCount);
 console.log("Inverse Probabilities:", inverseProbabilities);
 
+// Step 4: Calculate cumulative probabilities
+const calculateCumulativeProbabilities = (probabilities) => {
+  const cumulativeProbabilities = {};
+  let cumulativeSum = 0;
+  for (let number in probabilities) {
+      cumulativeSum += probabilities[number];
+      cumulativeProbabilities[number] = cumulativeSum;
+  }
+  return cumulativeProbabilities;
+};
+
+const inverseFrequenciesLucky = calculateInverseFrequencies(luckyCounts);
+console.log("Inverse Frequencies:", inverseFrequencies);
+console.log("Inverse Frequencies Lucky:", inverseFrequenciesLucky);
+
+// Step 3: Normalize inverse frequencies to probabilities
+const normalizeInverseProbabilities = (frequencies) => {
+    const total = Object.values(frequencies).reduce((acc, curr) => acc + curr, 0);
+    const normalizedProbabilities = {};
+    for (let number in frequencies) {
+        normalizedProbabilities[number] = frequencies[number] / total;
+    }
+    return normalizedProbabilities;
+};
+
+const normalizedInverseProbabilities = normalizeProbabilities(inverseFrequencies);
+const normalizedInverseProbabilitiesLucky = normalizeProbabilities(inverseFrequenciesLucky);
+console.log("Normalized Inverse Probabilities:", normalizedInverseProbabilities);
+console.log("Normalized Inverse Probabilities Lucky:", normalizedInverseProbabilitiesLucky);
+
+
+const cumulativeInversedProbabilities = calculateCumulativeProbabilities(normalizedInverseProbabilities);
+const cumulativeInversedProbabilitiesLucky = calculateCumulativeProbabilities(normalizedInverseProbabilitiesLucky);
+console.log("Cumulative  Inverse Probabilities:", cumulativeInversedProbabilities);
+console.log("Cumulative Inverse Probabilities Lucky:", cumulativeInversedProbabilitiesLucky);
+
+
 const weightedRandomInverse = (cumulativeProbabilities) => {
   const r = Math.random();
   console.log("Random Number r:", r);
   for (let number in cumulativeProbabilities) {
+    console.log("Number:", number, "Cumulative Probability:", cumulativeProbabilities[number]);
+
       if (r <= cumulativeProbabilities[number]) {
           return parseInt(number);
       }
-      const selectedNumber = weightedRandomInverse(cumulativeProbabilities);
-      const selectedLuckyNumber = weightedRandomInverse(cumulativeProbabilitiesLucky);
-      console.log("Selected Number:", selectedNumber);
-      console.log("Selected Lucky Number:", selectedLuckyNumber);
-  
+      
+      const selectedInverseNumber = weightedRandomInverse(cumulativeProbabilities);
+      const selectedInverseLuckyNumber = weightedRandomInverse(cumulativeInversedProbabilitiesLucky);
     }
+
   console.error("No number was selected. Check the probabilities.");
   return null;
   
 };
 
 
+// Generate and display numbers
+const generateInverseNumbers = (targetId, count, includeStars = false) => {
+  const numbers = [];
+  const numbersShow = document.getElementById(targetId);
+
+  if (!numbersShow) return;
+
+  numbersShow.innerHTML = '';
+
+  for (let i = 0; i < 5; i++) {
+      let randomNumber;
+      do {
+          randomNumber = weightedRandomInverse(cumulativeInversedProbabilities);
+      } while (numbers.includes(randomNumber));
+      numbers.push(randomNumber);
+  }
+
+  numbers.forEach((number, index) => {
+      const numberElement = document.createElement('li');
+      numberElement.className = index === count - 1 ? 'bonus-ball' : 'number-ball';
+      numberElement.textContent = `${number}`;
+      numbersShow.appendChild(numberElement);
+  });
+
+  if (includeStars) {
+      generateLuckyNumber();
+  }
+};
+
+const generateLuckyInverseNumber = () => {
+  const lucky = [];
+  const luckyShow = document.getElementById("lucky");
+  if (!luckyShow) return;
+
+  luckyShow.innerHTML = ''; // Clear existing content
+
+  for (let i = 0; i < 1; i++) {
+      let randomNumber;
+      do {
+          randomNumber = weightedRandomInverse(cumulativeInversedProbabilitiesLucky);
+      } while (lucky.includes(randomNumber));
+      lucky.push(randomNumber);
+  }
+
+  lucky.forEach((number) => {
+      const luckyElement = document.createElement('li');
+      luckyElement.className = 'bonus-ball';
+      luckyElement.textContent = `${number}`;
+      luckyShow.appendChild(luckyElement);
+  });
+};
+
+
+
+
+//Butao para GERAR NUMEROS INVERSOS
+
+const generateInverseButton = document.getElementById('generateInverseButton')
+
+generateInverseButton.addEventListener("click", () => generateInverseNumbers('numbers', 5, true));
