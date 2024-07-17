@@ -1,3 +1,12 @@
+import getData  from './fetchData.js';
+
+console.log('Getting data....')
+getData().then(data => {
+    console.log(data);
+}).catch(error => {
+    console.error('Error fetching data:', error);
+});
+console.log('Getting data...', await getData() );
 // Historical data arrays
 let historicalData = [
     [7,15,18,46,49], // 2nd january 2024
@@ -116,8 +125,6 @@ let stars = [
     [1,11],// 5th july 2024
     [6,8],// 9th july 2024
   ];
-
-
 
 // Count the occurrences of each number over time
 const countOccurrencesOverTime = (data) => {
