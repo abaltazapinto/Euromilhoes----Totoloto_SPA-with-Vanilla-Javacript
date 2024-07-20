@@ -47,11 +47,17 @@ getData().then(data => {
   const normalizeProbabilities = (probabilities) => {
     const total = Object.values(probabilities).reduce((acc, curr) => acc + curr, 0);
     const normalizedProbabilities = {};
+
+
     for (let number in probabilities) {
         normalizedProbabilities[number] = probabilities[number] / total;
+        console.log(`Normalized probability for ${number}: ${normalizedProbabilities[number]}`);
+        
     }
+
     return normalizedProbabilities;
-  };
+  }
+
   
   // Function to generate a random number based on normalized probabilities
   const weightedRandom = (probabilities) => {
@@ -59,8 +65,11 @@ getData().then(data => {
     let sum = 0;
     const r = Math.random();
     for (let number in normalizedProbabilities) {
+      console.log(`r ${r} sum ${sum} number ${number}`);
         sum += normalizedProbabilities[number];
+        
         if (r <= sum) {
+          console.log("Selected number:", number);
             return parseInt(number);
         }
     }
@@ -121,14 +130,12 @@ getData().then(data => {
   };
   
   const generateEuroButton = document.getElementById('generateEuroButton');
-  const generateStarsButton = document.getElementById('generateStarsButton');
+
   
   generateEuroButton.addEventListener("click", () => generateNumbers('numbers', 5, true));
-  generateStarsButton.addEventListener("click", () => generateStars('stars'));
+ 
   
   console.log("number of probabilities", numberProbabilities);
   console.log("weighted random", weightedRandom(numberProbabilities));
   console.log("weighted random of star probabilities", weightedRandom(starProbabilities));
-}).catch(error => {
-  console.error('Error fetching data:', error);
 });

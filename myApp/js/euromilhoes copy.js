@@ -47,6 +47,7 @@ getData().then(data => {
   const normalizeProbabilities = (probabilities) => {
     const total = Object.values(probabilities).reduce((acc, curr) => acc + curr, 0);
     const normalizedProbabilities = {};
+    console.log(total)
     for (let number in probabilities) {
         normalizedProbabilities[number] = probabilities[number] / total;
     }
@@ -60,8 +61,10 @@ getData().then(data => {
     const normalizedProbabilities = normalizeProbabilities(probabilities);
     let sum = 0;
     const r = Math.random();
+    
     for (let number in normalizedProbabilities) {
         sum += normalizedProbabilities[number];
+        console.log(`Generated number: ${r}, Total probability: ${sum} `);
         if (r <= sum) {
             return parseInt(number);
         }
@@ -123,14 +126,15 @@ getData().then(data => {
   };
   
   const generateEuroButton = document.getElementById('generateNear');
-  const generateStarsButton = document.getElementById('generateStarsButton');
+  
   
   generateEuroButton.addEventListener("click", () => generateNumbers('numbers', 5, true));
-  generateStarsButton.addEventListener("click", () => generateStars('stars'));
   
-  console.log("number of probabilities", numberProbabilities);
-  console.log("weighted random", weightedRandom(numberProbabilities));
-  console.log("weighted random of star probabilities", weightedRandom(starProbabilities));
-}).catch(error => {
-  console.error('Error fetching data:', error);
+  
+  // console.log("number of probabilities", numberProbabilities);
+  // console.log("weighted random", weightedRandom(numberProbabilities));
+  // console.log("weighted random of star probabilities", weightedRandom(starProbabilities));
+// }).catch(error => {
+//   console.error('Error fetching data:', error);
+// });
 });
