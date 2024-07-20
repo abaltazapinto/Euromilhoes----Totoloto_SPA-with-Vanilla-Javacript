@@ -3,7 +3,7 @@ body {
 }
 
 nav {
-    background-color: #f8f9fa;
+    background-color: orange !important;
     padding: 1rem;
 }
 
@@ -19,4 +19,11 @@ nav a:hover {
 
 #content {
     padding: 1rem;
+}
+
+img {
+
+    width: 100%;
+
+
 }
