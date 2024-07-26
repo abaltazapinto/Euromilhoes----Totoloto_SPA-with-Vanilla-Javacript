@@ -13,7 +13,7 @@ getData().then(data => {
 
   console.log(`Historical data: ${historicalData.length} draws`);
 
-  console.log(`what is this : ${historicalData[0]}`)
+  console.log(`Last numbers and stars : ${historicalData.splice(historicalData.length - 1)} and stars: ${historicStarData.splice(historicStarData.length - 1)}`);
   // Count the occurrences of each number
   const countOccurrences = (data) => {
     var counts = {};
@@ -138,4 +138,101 @@ getData().then(data => {
   console.log("number of probabilities", numberProbabilities);
   console.log("weighted random", weightedRandom(numberProbabilities));
   console.log("weighted random of star probabilities", weightedRandom(starProbabilities));
+  console.log(typeof numberProbabilities)
+/* const numberProbabilities = calculateProbabilities(numberCounts, totalDraws);
+  const starProbabilities = calculateProbabilities(starCounts, starDraws);
+  */
+
+  // i want to generate a number based on probabilities directly
+
+ /* is an object the number of probabilities, then convert the object into an array of entries [key, value] */
+ const entries = Object.entries(numberProbabilities);
+ // i can see that is an object of arrrays of probabilities each array each number
+
+ // Sort the entries by probability (value) in descending order
+ entries.sort(([, probA], [, probB]) => probB - probA);
+
+ // select the top 5 entries (highest probabilities)
+ const top5Entries = entries.slice(0, 5);
+ console.log("top 5 probabilities", top5Entries);
+
+
+ entries.sort(([, probA], [, probB]) => probA - probB);
+ const bottom5Entries = entries.slice(0, 5);
+ console.log("bottom 5 probabilities", bottom5Entries);
+
+ const entriesStar = Object.entries(starProbabilities);
+ entriesStar.sort(([, probA], [, probB]) => probB - probA);
+
+ const top2EntriesStar = entriesStar.slice(0, 2);
+ 
+ console.log("top probabilities of stars", top2EntriesStar);
+
+ const bottom2EntriesStar = entriesStar.slice(-2);
+ console.log("bottom probabilities of stars", bottom2EntriesStar);
+
+// Chat GPT
+
+// Assuming top5Entries and top5EntriesStar contain the top numbers and stars respectively
+
+// with their corresponding probabilities
+function displayTopNumbersAndStars(topNumbers, topStars) {
+  // Get the HTML elements by their IDs
+  const topNumbersElement = document.getElementById('top-numbers');
+  const topStarsElement = document.getElementById('top-stars');
+
+  topNumbersElement.innerHTML = ``;
+  topStarsElement.innerHTML = ``;
+  console.log("top numbers", topNumbers);
+
+  topNumbers.forEach(([number]) => {
+    const numberElement = document.createElement('li');
+    numberElement.className = 'number-ball';
+    numberElement.textContent = `${[number]}`;
+    topNumbersElement.appendChild(numberElement);
+  });
+
+  topStars.forEach(([star]) => {
+    const starsElement = document.createElement('li');
+    starsElement.className = 'bonus-ball';
+    starsElement.textContent = `${star}`;
+    topStarsElement.appendChild(starsElement);
+  });
+
+}
+
+function displayBottomNumbersAndStars(bottomNumbers, bottomStars) {
+  const bottomNumbersElement = document.getElementById('bottom-numbers');
+  const bottomStarsElement = document.getElementById('bottom-stars');
+  /*
+  const numbersShow = document.getElementById(targetId);
+  
+  if (!numbersShow) return;
+
+  numbersShow.innerHTML = '';
+*/
+bottomNumbersElement.innerHTML = ``;
+bottomStarsElement.innerHTML = ``;
+
+    bottomNumbers.forEach(([number]) => {
+      const numberElement = document.createElement('li');
+      numberElement.className = 'number-ball';
+      numberElement.textContent = `${[number]}`;
+      bottomNumbersElement.appendChild(numberElement);
+    });
+
+    bottomStars.forEach(([star]) => {
+      const starsElement = document.createElement('li');
+      starsElement.className = 'bonus-ball';
+      starsElement.textContent = `${star}`;
+      bottomStarsElement.appendChild(starsElement);
+    });
+
+}
+  
+// Call this function with your actual data
+generateTopButton.addEventListener("click", () => displayTopNumbersAndStars(top5Entries, top2EntriesStar));
+
+generateBottomButton.addEventListener("click", () => displayBottomNumbersAndStars(bottom5Entries, bottom2EntriesStar));
+
 });

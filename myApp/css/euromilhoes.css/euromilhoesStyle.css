@@ -1,48 +1,35 @@
 body {
-    background-color: burlywood;
+    background-color: white !important;
   }
   
   .games {
     display: flex;
+    flex: 1;
+    flex-direction: row;
     align-items: center;
-    width: 30%;
-    align-items: center;
-    justify-content: space-between;
-    height: 100vh;
+    justify-content: space-around;
     text-align: center;
-    margin: 20px;
-  
-    display: flex-wrap;
+    max-height: 25%;
+    border: 2px solid black;
+    margin: auto;
   }
   
   .game {
     flex: 1 1 48%;
-    padding: 20px;
+    padding: 10px;
     background-color: #ffffff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin: 10px;
+    margin: 5px;
     width: 20em;
 }
   .game img {
-    width: 80%;
+    width: 30%;
     height: auto;
 }
 
-  .games > img {
-    width: 80%;
-    height: auto;
-    max-width: fit-content;
-    margin-top: 10px auto; /* Add this line to center the image horizontally */
-    border: 2px solid black;
-    border-radius: 2%;
-  }
-  
-  .games h3 {
-    font-weight: bold;
-  }
-  
-  #numbers, #stars {
+
+  #numbers, #stars, #top-numbers, #top-stars, #bottom-numbers, #bottom-stars{
     list-style: none;
     padding: 0;
     margin: 5px 20px;
@@ -53,13 +40,9 @@ body {
     height: auto;
   }
 
-  #numbers {
-
-  }
-  
-  #numbers li, #stars li {
-    width: 40%;
-    height: 40%;
+  #numbers li,  #stars li,  #top-numbers li, #top-stars li, #bottom-numbers li, #bottom-stars li {
+    width: 10%;
+    height: 30%;
     line-height: 30px; /* Center text vertically */
     border-radius: 50%;
     margin: 0 5px; /* Space between circles */
@@ -69,9 +52,9 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
-    
+    font-size: 16px;    
   }
+
   
   .number-ball {
     background-color: green; /* Regular number color */

@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('trendAnalysis-link').addEventListener('click', () => {
         event.preventDefault();
-        loadPage('trendAnalysis.html');z<
+        loadPage('trendAnalysis.html');
     });
 
     // Load the default page
